@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Period Tracker - Female Health Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Page-specific animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .calendar-header, .calendar-days, .calendar-grid {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .calendar-day {
+            transition: all 0.3s ease;
+        }
+        
+        .calendar-day:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .calendar-day.today {
+            animation: pulse 2s infinite;
+        }
+        
+        .calendar-day.selected {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 3px var(--primary-color);
+        }
+        
+        .form-section, .stats-section {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(232, 74, 127, 0.25);
+        }
+        
+        .symptom-tag {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            margin: 3px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        
+        .symptom-tag:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(232, 74, 127, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .calendar-days div {
+            text-align: center;
+            padding: 10px 0;
+        }
+        
+        .switch-wrapper {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin: 0 10px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="tracker.html"><i class="fas fa-calendar-alt"></i> Period Tracker</a></li>
+                <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Period Tracker</h1>
+        <p>Keep track of your menstrual cycle and understand your body better.</p>
+        
+        <div class="switch-wrapper">
+            <span>Calendar View</span>
+            <label class="switch">
+                <input type="checkbox" id="view-toggle">
+                <span class="slider"></span>
+            </label>
+            <span>Timeline View</span>
+        </div>
+        
+        <div id="calendar-view" class="calendar">
+            <div class="calendar-header">
+                <button id="prev-month" class="btn"><i class="fas fa-chevron-left"></i></button>
+                <h2 id="current-month">Month Year</h2>
+                <button id="next-month" class="btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="calendar-days">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+            
+            <div id="calendar-grid" class="calendar-grid">
+                <!-- Calendar days will be inserted here by JavaScript -->
+            </div>
+            
+            <div class="calendar-legend" style="display: flex; justify-content: center; margin-top: 15px; gap: 20px;">
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 15px; height: 15px; background-color: var(--primary-color); border-radius: 50%; margin-right: 5px;"></div>
+                    <span>Period</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 15px; height: 15px; background-color: var(--accent-color); border-radius: 50%; margin-right: 5px;"></div>
+                    <span>Fertile Window</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 15px; height: 15px; background-color: var(--secondary-color); border-radius: 50%; margin-right: 5px;"></div>
+                    <span>Today</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="timeline-view" class="timeline" style="display: none; max-width: 800px; margin: 20px auto;">
+            <h3>Your Period History</h3>
+            <div id="timeline-container" style="position: relative; padding: 20px 0;">
+                <!-- Timeline will be inserted here by JavaScript -->
+                <div class="timeline-line" style="position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; background-color: var(--primary-color);"></div>
+            </div>
+        </div>
+        
+        <div class="form-section" style="max-width: 600px; margin: 30px auto; background-color: var(--light-color); padding: 20px; border-radius: 10px;">
+            <h2><i class="fas fa-calendar-plus"></i> Log Your Period</h2>
+            <form id="period-form">
+                <div class="form-group">
+                    <label for="start-date">Period Start Date:</label>
+                    <input type="date" id="start-date" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="end-date">Period End Date (optional):</label>
+                    <input type="date" id="end-date" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label>Symptoms:</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px;">
+                        <div class="symptom-tag">
+                            <input type="checkbox" name="symptoms" value="cramps" id="symptom-cramps">
+                            <label for="symptom-cramps">Cramps</label>
+                        </div>
+                        <div class="symptom-tag">
+                            <input type="checkbox" name="symptoms" value="headache" id="symptom-headache">
+                            <label for="symptom-headache">Headache</label>
+                        </div>
+                        <div class="symptom-tag">
+                            <input type="checkbox" name="symptoms" value="bloating" id="symptom-bloating">
+                            <label for="symptom-bloating">Bloating</label>
+                        </div>
+                        <div class="symptom-tag">
+                            <input type="checkbox" name="symptoms" value="fatigue" id="symptom-fatigue">
+                            <label for="symptom-fatigue">Fatigue</label>
+                        </div>
+                        <div class="symptom-tag">
+                            <input type="checkbox" name="symptoms" value="mood_swings" id="symptom-mood">
+                            <label for="symptom-mood">Mood Swings</label>
+                        </div>
+                        <div class="symptom-tag">
+                            <input type="checkbox" name="symptoms" value="acne" id="symptom-acne">
+                            <label for="symptom-acne">Acne</label>
+                        </div>
+                        <div class="symptom-tag">
+                            <input type="checkbox" name="symptoms" value="backache" id="symptom-backache">
+                            <label for="symptom-backache">Backache</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="flow">Flow Intensity:</label>
+                    <select id="flow" class="form-control">
+                        <option value="light">Light</option>
+                        <option value="medium">Medium</option>
+                        <option value="heavy">Heavy</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes:</label>
+                    <textarea id="notes" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <button type="submit" class="btn" id="save-period-btn">
+                    <span id="save-text">Save Period Data</span>
+                    <span id="saving-spinner" class="loading-spinner" style="display: none;"></span>
+                </button>
+            </form>
+        </div>
+        
+        <div class="stats-section" style="max-width: 600px; margin: 30px auto; background-color: var(--light-color); padding: 20px; border-radius: 10px;">
+            <h2><i class="fas fa-chart-line"></i> Your Cycle Statistics</h2>
+            <div id="cycle-stats">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-size: 2em; font-weight: bold; color: var(--primary-color);" id="avg-cycle">--</div>
+                        <div>Avg. Cycle Length</div>
+                    </div>
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-size: 2em; font-weight: bold; color: var(--primary-color);" id="avg-period">--</div>
+                        <div>Avg. Period Length</div>
+                    </div>
+                </div>
+                
+                <div style="background-color: white; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                    <h3>Next Period Expected:</h3>
+                    <p style="font-size: 1.2em; font-weight: bold; text-align: center;" id="next-period">Loading...</p>
+                </div>
+                
+                <div id="period-history" style="margin-top: 20px;">
+                    <h3>Recent Periods</h3>
+                    <ul id="period-list" style="list-style-type: none; padding: 0;">
+                        <!-- Period history will be inserted here by JavaScript -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Female Health Tracker</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Additional tracker page script
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle between calendar and timeline views
+            document.getElementById('view-toggle').addEventListener('change', function() {
+                const calendarView = document.getElementById('calendar-view');
+                const timelineView = document.getElementById('timeline-view');
+                
+                if (this.checked) {
+                    calendarView.style.display = 'none';
+                    timelineView.style.display = 'block';
+                    renderTimeline();
+                } else {
+                    calendarView.style.display = 'block';
+                    timelineView.style.display = 'none';
+                }
+            });
+            
+            // Add animation to form submission
+            document.getElementById('period-form').addEventListener('submit', function() {
+                document.getElementById('save-text').style.display = 'none';
+                document.getElementById('saving-spinner').style.display = 'inline-block';
+                
+                // Simulate saving delay for effect
+                setTimeout(function() {
+                    document.getElementById('save-text').style.display = 'inline-block';
+                    document.getElementById('saving-spinner').style.display = 'none';
+                }, 1000);
+            });
+            
+            // Render timeline view
+            function renderTimeline() {
+                const timelineContainer = document.getElementById('timeline-container');
+                // Clear previous timeline
+                while (timelineContainer.children.length > 1) {
+                    timelineContainer.removeChild(timelineContainer.lastChild);
+                }
+                
+                // Get period data from localStorage
+                const periodData = JSON.parse(localStorage.getItem('periodData')) || [];
+                
+                // Sort periods by start date
+                const sortedPeriods = [...periodData].sort((a, b) => {
+                    return new Date(b.startDate) - new Date(a.startDate);
+                });
+                
+                // Create timeline items
+                sortedPeriods.forEach((period, index) => {
+                    const startDate = new Date(period.startDate);
+                    const formattedDate = startDate.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric' 
+                    });
+                    
+                    const timelineItem = document.createElement('div');
+                    timelineItem.className = 'timeline-item';
+                    timelineItem.style.position = 'relative';
+                    timelineItem.style.margin = '30px 0';
+                    timelineItem.style.opacity = '0';
+                    timelineItem.style.animation = `slideIn 0.5s ease forwards ${index * 0.1}s`;
+                    
+                    const side = index % 2 === 0 ? 'left' : 'right';
+                    timelineItem.style.marginLeft = side === 'right' ? '55%' : '0';
+                    timelineItem.style.marginRight = side === 'left' ? '55%' : '0';
+                    timelineItem.style.textAlign = side === 'left' ? 'right' : 'left';
+                    
+                    // Add dot on timeline
+                    const dot = document.createElement('div');
+                    dot.style.position = 'absolute';
+                    dot.style.width = '20px';
+                    dot.style.height = '20px';
+                    dot.style.borderRadius = '50%';
+                    dot.style.backgroundColor = 'var(--primary-color)';
+                    dot.style.top = '0';
+                    dot.style.left = side === 'left' ? 'calc(100% + 42px)' : '-62px';
+                    
+                    // Add content
+                    const content = document.createElement('div');
+                    content.style.backgroundColor = 'white';
+                    content.style.padding = '15px';
+                    content.style.borderRadius = '8px';
+                    content.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+                    
+                    let duration = 'Unknown duration';
+                    if (period.endDate) {
+                        const endDate = new Date(period.endDate);
+                        const durationDays = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                        duration = `${durationDays} day${durationDays !== 1 ? 's' : ''}`;
+                    }
+                    
+                    content.innerHTML = `
+                        <h4>${formattedDate}</h4>
+                        <p>Duration: ${duration}</p>
+                        ${period.symptoms && period.symptoms.length > 0 ? 
+                            `<p>Symptoms: ${period.symptoms.join(', ')}</p>` : ''}
+                        ${period.flow ? `<p>Flow: ${period.flow}</p>` : ''}
+                    `;
+                    
+                    timelineItem.appendChild(dot);
+                    timelineItem.appendChild(content);
+                    timelineContainer.appendChild(timelineItem);
+                });
+                
+                // If no periods, show message
+                if (sortedPeriods.length === 0) {
+                    const message = document.createElement('div');
+                    message.style.textAlign = 'center';
+                    message.style.padding = '20px';
+                    message.innerHTML = '<p>No period data recorded yet. Start tracking your periods using the form below!</p>';
+                    timelineContainer.appendChild(message);
+                }
+            }
+            
+            // Update period list in stats section
+            function updatePeriodList() {
+                const periodList = document.getElementById('period-list');
+                periodList.innerHTML = '';
+                
+                const periodData = JSON.parse(localStorage.getItem('periodData')) || [];
+                
+                // Sort periods by start date (most recent first)
+                const sortedPeriods = [...periodData].sort((a, b) => {
+                    return new Date(b.startDate) - new Date(a.startDate);
+                });
+                
+                // Show only the last 3 periods
+                const recentPeriods = sortedPeriods.slice(0, 3);
+                
+                recentPeriods.forEach(period => {
+                    const startDate = new Date(period.startDate);
+                    const formattedStart = startDate.toLocaleDateString();
+                    
+                    let formattedEnd = 'Ongoing';
+                    let duration = '?';
+                    
+                    if (period.endDate) {
+                        const endDate = new Date(period.endDate);
+                        formattedEnd = endDate.toLocaleDateString();
+                        duration = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                    }
+                    
+                    const listItem = document.createElement('li');
+                    listItem.style.padding = '10px';
+                    listItem.style.marginBottom = '10px';
+                    listItem.style.borderLeft = '3px solid var(--primary-color)';
+                    listItem.style.backgroundColor = 'white';
+                    listItem.style.borderRadius = '0 5px 5px 0';
+                    
+                    listItem.innerHTML = `
+                        <div><strong>${formattedStart}</strong> to <strong>${formattedEnd}</strong></div>
+                        <div>Duration: ${duration} days</div>
+                        ${period.flow ? `<div>Flow: ${period.flow}</div>` : ''}
+                    `;
+                    
+                    periodList.appendChild(listItem);
+                });
+                
+                // If no periods, show message
+                if (recentPeriods.length === 0) {
+                    const message = document.createElement('li');
+                    message.textContent = 'No periods recorded yet.';
+                    periodList.appendChild(message);
+                }
+            }
+            
+            // Make calendar days selectable
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('calendar-day') && !e.target.classList.contains('empty')) {
+                    // Remove selected class from all days
+                    document.querySelectorAll('.calendar-day').forEach(day => {
+                        day.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked day
+                    e.target.classList.add('selected');
+                    
+                    // Set the date in the form
+                    const day = parseInt(e.target.textContent);
+                    const monthYear = document.getElementById('current-month').textContent.split(' ');
+                    const month = new Date(Date.parse(monthYear[0] + " 1, " + monthYear[1])).getMonth();
+                    const year = parseInt(monthYear[1]);
+                    
+                    const selectedDate = new Date(year, month, day);
+                    const formattedDate = selectedDate.toISOString().split('T')[0];
+                    
+                    document.getElementById('start-date').value = formattedDate;
+                }
+            });
+            
+            // Initialize period list
+            updatePeriodList();
+            
+            // Update period list whenever period data changes
+            const originalLoadCalendar = window.loadCalendar;
+            window.loadCalendar = function(month, year) {
+                originalLoadCalendar(month, year);
+                updatePeriodList();
+            };
+        });
+    </script>
+</body>
+</html> 

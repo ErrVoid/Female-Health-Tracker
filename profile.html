@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Female Health Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="tracker.html"><i class="fas fa-calendar-alt"></i> Period Tracker</a></li>
+                <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>User Profile</h1>
+        <p>Manage your personal information and health data.</p>
+        
+        <div style="max-width: 600px; margin: 30px auto; background-color: var(--light-color); padding: 20px; border-radius: 10px;">
+            <h2><i class="fas fa-user-circle"></i> Personal Information</h2>
+            <form id="profile-form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" class="form-control" placeholder="Your Name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="birth-date">Date of Birth:</label>
+                    <input type="date" id="birth-date" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" class="form-control" placeholder="your.email@example.com">
+                </div>
+                
+                <h3>Health Information</h3>
+                
+                <div class="form-group">
+                    <label for="avg-cycle-length">Average Cycle Length (days):</label>
+                    <input type="number" id="avg-cycle-length" class="form-control" min="21" max="35" value="28">
+                </div>
+                
+                <div class="form-group">
+                    <label for="avg-period-length">Average Period Length (days):</label>
+                    <input type="number" id="avg-period-length" class="form-control" min="2" max="10" value="5">
+                </div>
+                
+                <div class="form-group">
+                    <label>Common Symptoms:</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <label style="margin-right: 15px;">
+                            <input type="checkbox" name="common-symptoms" value="cramps"> Cramps
+                        </label>
+                        <label style="margin-right: 15px;">
+                            <input type="checkbox" name="common-symptoms" value="headache"> Headache
+                        </label>
+                        <label style="margin-right: 15px;">
+                            <input type="checkbox" name="common-symptoms" value="bloating"> Bloating
+                        </label>
+                        <label style="margin-right: 15px;">
+                            <input type="checkbox" name="common-symptoms" value="fatigue"> Fatigue
+                        </label>
+                        <label style="margin-right: 15px;">
+                            <input type="checkbox" name="common-symptoms" value="mood_swings"> Mood Swings
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="medical-conditions">Medical Conditions (optional):</label>
+                    <textarea id="medical-conditions" class="form-control" rows="3" placeholder="Any relevant medical conditions or medications"></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Save Profile</button>
+            </form>
+        </div>
+        
+        <div style="max-width: 600px; margin: 30px auto; background-color: var(--light-color); padding: 20px; border-radius: 10px;">
+            <h2><i class="fas fa-history"></i> Period History</h2>
+            <p>View your recorded period data and health insights.</p>
+            <a href="tracker.html" class="btn">View Period Calendar</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Female Health Tracker</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Load profile data from localStorage if it exists
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileData = JSON.parse(localStorage.getItem('profileData')) || {};
+            
+            if (profileData.name) document.getElementById('name').value = profileData.name;
+            if (profileData.birthDate) document.getElementById('birth-date').value = profileData.birthDate;
+            if (profileData.email) document.getElementById('email').value = profileData.email;
+            if (profileData.avgCycleLength) document.getElementById('avg-cycle-length').value = profileData.avgCycleLength;
+            if (profileData.avgPeriodLength) document.getElementById('avg-period-length').value = profileData.avgPeriodLength;
+            if (profileData.medicalConditions) document.getElementById('medical-conditions').value = profileData.medicalConditions;
+            
+            // Check symptoms checkboxes
+            if (profileData.commonSymptoms) {
+                profileData.commonSymptoms.forEach(symptom => {
+                    const checkbox = document.querySelector(`input[name="common-symptoms"][value="${symptom}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+        });
+        
+        // Save profile data to localStorage
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const commonSymptoms = [];
+            document.querySelectorAll('input[name="common-symptoms"]:checked').forEach(function(checkbox) {
+                commonSymptoms.push(checkbox.value);
+            });
+            
+            const profileData = {
+                name: document.getElementById('name').value,
+                birthDate: document.getElementById('birth-date').value,
+                email: document.getElementById('email').value,
+                avgCycleLength: document.getElementById('avg-cycle-length').value,
+                avgPeriodLength: document.getElementById('avg-period-length').value,
+                commonSymptoms: commonSymptoms,
+                medicalConditions: document.getElementById('medical-conditions').value
+            };
+            
+            localStorage.setItem('profileData', JSON.stringify(profileData));
+            alert('Profile saved successfully!');
+        });
+    </script>
+</body>
+</html> 

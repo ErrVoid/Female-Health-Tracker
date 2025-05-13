@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Female Health Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Theme previews */
+        .theme-preview {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .theme-option {
+            cursor: pointer;
+            border-radius: 10px;
+            padding: 15px;
+            width: calc(25% - 15px);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+        
+        .theme-option:hover {
+            transform: translateY(-5px);
+        }
+        
+        .theme-option.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .color-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 5px;
+            border: 2px solid #fff;
+            box-shadow: 0 0 3px rgba(0,0,0,0.3);
+        }
+        
+        /* Settings sections */
+        .settings-section {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: var(--light-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .settings-section:hover {
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        
+        /* Switch toggle styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin: 0 10px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .settings-section {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .settings-section:nth-child(1) { animation-delay: 0.1s; }
+        .settings-section:nth-child(2) { animation-delay: 0.2s; }
+        .settings-section:nth-child(3) { animation-delay: 0.3s; }
+        
+        .btn {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(30, 30);
+                opacity: 0;
+            }
+        }
+        
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="tracker.html"><i class="fas fa-calendar-alt"></i> Period Tracker</a></li>
+                <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Settings</h1>
+        <p>Customize your app experience and preferences.</p>
+        
+        <div class="settings-section">
+            <h2><i class="fas fa-palette"></i> Theme Options</h2>
+            <p>Choose your preferred color theme for the app.</p>
+            
+            <div class="theme-preview">
+                <div class="theme-option" data-theme="default">
+                    <div class="color-preview">
+                        <span class="color-circle" style="background-color: #e84a7f;"></span>
+                        <span class="color-circle" style="background-color: #f4a9c1;"></span>
+                        <span class="color-circle" style="background-color: #6a0dad;"></span>
+                    </div>
+                    <div>Pink (Default)</div>
+                </div>
+                
+                <div class="theme-option" data-theme="purple">
+                    <div class="color-preview">
+                        <span class="color-circle" style="background-color: #9c27b0;"></span>
+                        <span class="color-circle" style="background-color: #ce93d8;"></span>
+                        <span class="color-circle" style="background-color: #4a148c;"></span>
+                    </div>
+                    <div>Purple Dream</div>
+                </div>
+                
+                <div class="theme-option" data-theme="teal">
+                    <div class="color-preview">
+                        <span class="color-circle" style="background-color: #009688;"></span>
+                        <span class="color-circle" style="background-color: #80cbc4;"></span>
+                        <span class="color-circle" style="background-color: #00695c;"></span>
+                    </div>
+                    <div>Teal Calm</div>
+                </div>
+                
+                <div class="theme-option" data-theme="dark">
+                    <div class="color-preview">
+                        <span class="color-circle" style="background-color: #bb86fc;"></span>
+                        <span class="color-circle" style="background-color: #121212;"></span>
+                        <span class="color-circle" style="background-color: #03dac6;"></span>
+                    </div>
+                    <div>Dark Mode</div>
+                </div>
+            </div>
+            
+            <button id="apply-theme" class="btn" style="margin-top: 20px;">Apply Theme</button>
+            
+            <div id="theme-preview" style="margin-top: 20px; padding: 15px; border-radius: 8px; transition: all 0.3s ease;">
+                <h4>Preview</h4>
+                <p>This is how your selected theme will look.</p>
+                <button class="btn">Button Example</button>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <h2><i class="fas fa-bell"></i> Notification Settings</h2>
+            <form id="notification-form">
+                <div class="form-group">
+                    <label class="switch-wrapper">
+                        <span>Period Reminders</span>
+                        <label class="switch">
+                            <input type="checkbox" id="period-reminders" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </label>
+                    <p class="form-text">Get reminders 2 days before your expected period.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label class="switch-wrapper">
+                        <span>Ovulation Alerts</span>
+                        <label class="switch">
+                            <input type="checkbox" id="ovulation-alerts" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </label>
+                    <p class="form-text">Get notified about your fertile window.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label class="switch-wrapper">
+                        <span>Medication Reminders</span>
+                        <label class="switch">
+                            <input type="checkbox" id="medication-reminders">
+                            <span class="slider"></span>
+                        </label>
+                    </label>
+                    <p class="form-text">Set reminders for medications or birth control.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="preferred-time">Preferred Notification Time:</label>
+                    <input type="time" id="preferred-time" class="form-control" value="08:00">
+                </div>
+                
+                <button type="submit" class="btn">Save Notification Settings</button>
+            </form>
+        </div>
+        
+        <div class="settings-section">
+            <h2><i class="fas fa-shield-alt"></i> Privacy Settings</h2>
+            <form id="privacy-form">
+                <div class="form-group">
+                    <label class="switch-wrapper">
+                        <span>Save Data Locally Only</span>
+                        <label class="switch">
+                            <input type="checkbox" id="save-data-locally" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </label>
+                    <p class="form-text">Your data stays on your device only (recommended).</p>
+                </div>
+                
+                <div class="form-group">
+                    <label class="switch-wrapper">
+                        <span>Enable App Lock</span>
+                        <label class="switch">
+                            <input type="checkbox" id="app-lock">
+                            <span class="slider"></span>
+                        </label>
+                    </label>
+                    <p class="form-text">Protect your data with a PIN.</p>
+                </div>
+                
+                <div class="form-group" id="pin-group" style="display: none;">
+                    <label for="app-pin">Set 4-digit PIN:</label>
+                    <input type="password" id="app-pin" class="form-control" maxlength="4" pattern="[0-9]{4}">
+                </div>
+                
+                <button type="submit" class="btn">Save Privacy Settings</button>
+            </form>
+        </div>
+        
+        <div class="settings-section" style="text-align: center;">
+            <h2><i class="fas fa-trash-alt"></i> Data Management</h2>
+            <p>Permanently delete all your data from the app.</p>
+            <button id="clear-data" class="btn" style="background-color: var(--warning-color);">Clear All App Data</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Female Health Tracker</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Theme color definitions
+        const themes = {
+            default: {
+                primary: '#e84a7f',
+                secondary: '#f4a9c1',
+                accent: '#6a0dad',
+                light: '#fff5f8',
+                dark: '#333'
+            },
+            purple: {
+                primary: '#9c27b0',
+                secondary: '#ce93d8',
+                accent: '#4a148c',
+                light: '#f3e5f5',
+                dark: '#333'
+            },
+            teal: {
+                primary: '#009688',
+                secondary: '#80cbc4',
+                accent: '#00695c',
+                light: '#e0f2f1',
+                dark: '#333'
+            },
+            dark: {
+                primary: '#bb86fc',
+                secondary: '#121212',
+                accent: '#03dac6',
+                light: '#1e1e1e',
+                dark: '#ffffff'
+            }
+        };
+        
+        // Create a style element to hold CSS variables
+        let customThemeStyle = document.createElement('style');
+        document.head.appendChild(customThemeStyle);
+        
+        // Apply theme by updating CSS variables
+        function applyTheme(theme) {
+            // Create CSS variable declarations
+            const themeColors = themes[theme];
+            let cssVars = ':root {\n';
+            
+            for (const [key, value] of Object.entries(themeColors)) {
+                cssVars += `  --${key}-color: ${value};\n`;
+            }
+            
+            cssVars += '}\n';
+            
+            // For dark theme, also add body styles
+            if (theme === 'dark') {
+                cssVars += `
+                body {
+                    background-color: var(--light-color);
+                    color: var(--dark-color);
+                }
+                
+                .settings-section, .form-section, .stats-section {
+                    background-color: #272727;
+                }
+                
+                .form-control {
+                    background-color: #333;
+                    color: #fff;
+                    border-color: #444;
+                }
+                
+                .calendar-day {
+                    background-color: #333;
+                    color: #fff;
+                }
+                `;
+            }
+            
+            // Update the style element
+            customThemeStyle.textContent = cssVars;
+            
+            // Update theme preview
+            updateThemePreview(theme);
+            
+            // Save to localStorage
+            const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+            settings.theme = theme;
+            localStorage.setItem('appSettings', JSON.stringify(settings));
+        }
+        
+        // Update theme preview
+        function updateThemePreview(theme) {
+            const preview = document.getElementById('theme-preview');
+            preview.style.backgroundColor = themes[theme].secondary;
+            preview.style.color = themes[theme].dark;
+            
+            const previewButton = preview.querySelector('button');
+            previewButton.style.backgroundColor = themes[theme].primary;
+            previewButton.style.color = 'white';
+            
+            // Update selected class on theme options
+            document.querySelectorAll('.theme-option').forEach(option => {
+                if (option.dataset.theme === theme) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+        
+        // Load settings from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+            
+            // Theme settings
+            const currentTheme = settings.theme || 'default';
+            updateThemePreview(currentTheme);
+            
+            // Select the current theme option
+            document.querySelectorAll('.theme-option').forEach(option => {
+                if (option.dataset.theme === currentTheme) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Notification settings
+            if (settings.notifications) {
+                document.getElementById('period-reminders').checked = settings.notifications.periodReminders;
+                document.getElementById('ovulation-alerts').checked = settings.notifications.ovulationAlerts;
+                document.getElementById('medication-reminders').checked = settings.notifications.medicationReminders;
+                if (settings.notifications.preferredTime) {
+                    document.getElementById('preferred-time').value = settings.notifications.preferredTime;
+                }
+            }
+            
+            // Privacy settings
+            if (settings.privacy) {
+                document.getElementById('save-data-locally').checked = settings.privacy.saveLocally;
+                document.getElementById('app-lock').checked = settings.privacy.appLock;
+                
+                if (settings.privacy.appLock) {
+                    document.getElementById('pin-group').style.display = 'block';
+                    document.getElementById('app-pin').value = settings.privacy.pin || '';
+                }
+            }
+            
+            // Apply current theme on load
+            if (settings.theme) {
+                applyTheme(settings.theme);
+            }
+        });
+        
+        // Theme option click handlers
+        document.querySelectorAll('.theme-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const theme = this.dataset.theme;
+                
+                // Remove selected class from all options
+                document.querySelectorAll('.theme-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Update preview
+                updateThemePreview(theme);
+            });
+        });
+        
+        // Apply theme button
+        document.getElementById('apply-theme').addEventListener('click', function() {
+            const selectedTheme = document.querySelector('.theme-option.selected').dataset.theme;
+            applyTheme(selectedTheme);
+            
+            // Add button animation
+            this.innerHTML = 'Theme Applied!';
+            this.style.backgroundColor = 'var(--success-color)';
+            
+            setTimeout(() => {
+                this.innerHTML = 'Apply Theme';
+                this.style.backgroundColor = '';
+            }, 2000);
+        });
+        
+        // Show/hide PIN field based on app lock checkbox
+        document.getElementById('app-lock').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('pin-group').style.display = 'block';
+            } else {
+                document.getElementById('pin-group').style.display = 'none';
+            }
+        });
+        
+        // Save notification settings
+        document.getElementById('notification-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const notifications = {
+                periodReminders: document.getElementById('period-reminders').checked,
+                ovulationAlerts: document.getElementById('ovulation-alerts').checked,
+                medicationReminders: document.getElementById('medication-reminders').checked,
+                preferredTime: document.getElementById('preferred-time').value
+            };
+            
+            // Get current settings or create new object
+            const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+            settings.notifications = notifications;
+            
+            localStorage.setItem('appSettings', JSON.stringify(settings));
+            
+            // Feedback animation
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+            submitBtn.style.backgroundColor = 'var(--success-color)';
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.style.backgroundColor = '';
+            }, 2000);
+        });
+        
+        // Save privacy settings
+        document.getElementById('privacy-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const appLock = document.getElementById('app-lock').checked;
+            let pin = null;
+            
+            if (appLock) {
+                pin = document.getElementById('app-pin').value;
+                if (pin.length !== 4 || isNaN(pin)) {
+                    alert('Please enter a valid 4-digit PIN');
+                    return;
+                }
+            }
+            
+            const privacy = {
+                saveLocally: document.getElementById('save-data-locally').checked,
+                appLock: appLock,
+                pin: pin
+            };
+            
+            // Get current settings or create new object
+            const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+            settings.privacy = privacy;
+            
+            localStorage.setItem('appSettings', JSON.stringify(settings));
+            
+            // Feedback animation
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+            submitBtn.style.backgroundColor = 'var(--success-color)';
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.style.backgroundColor = '';
+            }, 2000);
+        });
+        
+        // Clear all app data
+        document.getElementById('clear-data').addEventListener('click', function() {
+            if (confirm('Are you sure you want to clear all app data? This action cannot be undone.')) {
+                localStorage.clear();
+                
+                // Feedback animation
+                this.innerHTML = '<i class="fas fa-check"></i> Data Cleared!';
+                
+                setTimeout(() => {
+                    alert('All data has been cleared. The page will now reload.');
+                    window.location.reload();
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html> 

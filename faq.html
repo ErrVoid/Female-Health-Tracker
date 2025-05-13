@@ -1,1 +1,285 @@
- 
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Female Health Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .faq-question {
+            padding: 15px 20px;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .faq-question:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .faq-answer {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-answer.active {
+            padding: 15px 20px;
+            max-height: 500px;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+        
+        .rotate-icon {
+            transform: rotate(180deg);
+        }
+        
+        .category-heading {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        
+        .faq-answer ul {
+            padding-left: 20px;
+        }
+        
+        .faq-answer li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="tracker.html"><i class="fas fa-calendar-alt"></i> Period Tracker</a></li>
+                <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Frequently Asked Questions</h1>
+        <p>Find answers to common questions about menstrual health, reproductive wellness, and more.</p>
+        
+        <div class="faq-container">
+            <h2 class="category-heading"><i class="fas fa-calendar-alt"></i> Menstrual Cycle</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What is a normal period?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>A normal period typically lasts 3-7 days with a menstrual cycle of 21-35 days. The average cycle is 28 days, but this varies from person to person. Normal menstrual flow ranges from light to heavy and may include blood clots.</p>
+                    <p>If your period consistently lasts longer than 7 days or is extremely heavy (soaking through protection every hour), you should consult a healthcare provider.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How do I track my period?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>You can track your period using our tracker page. Here's how:</p>
+                    <ol>
+                        <li>Navigate to the <a href="tracker.html">Period Tracker</a> page</li>
+                        <li>Record the start date of your period</li>
+                        <li>Log symptoms and flow intensity</li>
+                        <li>Add the end date once your period is over</li>
+                    </ol>
+                    <p>Tracking for at least 3-4 cycles will help provide more accurate predictions for your next period.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What are the signs of ovulation?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Common signs of ovulation include:</p>
+                    <ul>
+                        <li>Changes in cervical mucus (becomes clearer, slippery, and stretchy like egg white)</li>
+                        <li>Mild pelvic or lower abdominal pain (mittelschmerz)</li>
+                        <li>Slight increase in basal body temperature</li>
+                        <li>Increased sex drive</li>
+                        <li>Light spotting</li>
+                        <li>Breast tenderness</li>
+                        <li>Heightened sense of smell</li>
+                    </ul>
+                    <p>Ovulation typically occurs around the middle of your cycle, but this can vary.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can stress affect my menstrual cycle?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, stress can significantly impact your menstrual cycle. High levels of stress can cause:</p>
+                    <ul>
+                        <li>Delayed periods</li>
+                        <li>Missed periods (amenorrhea)</li>
+                        <li>Irregular cycles</li>
+                        <li>Changes in period duration</li>
+                        <li>More painful periods (dysmenorrhea)</li>
+                    </ul>
+                    <p>This happens because stress activates your body's fight-or-flight response and can affect the hypothalamus, which regulates hormones controlling your menstrual cycle.</p>
+                    <p>Managing stress through exercise, meditation, adequate sleep, and other self-care practices can help regulate your cycle.</p>
+                </div>
+            </div>
+            
+            <h2 class="category-heading"><i class="fas fa-heart"></i> Sexual Health</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is it safe to have sex during my period?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, it is generally safe to have sex during menstruation. Some people even find that having sex during this time can help relieve cramps due to the release of endorphins.</p>
+                    <p>However, it's important to note that:</p>
+                    <ul>
+                        <li>You can still get pregnant during your period, especially if you have a shorter cycle</li>
+                        <li>You can still contract or transmit sexually transmitted infections (STIs) during your period</li>
+                        <li>Using condoms or other barriers is still recommended if pregnancy or STIs are concerns</li>
+                    </ul>
+                    <p>For comfort and cleanliness, you might consider laying a dark towel underneath you or having sex in the shower.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What birth control options are available?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>There are many birth control options with varying effectiveness rates:</p>
+                    <ul>
+                        <li><strong>Hormonal methods:</strong> pills, patches, rings, injections, implants (91-99% effective)</li>
+                        <li><strong>Barrier methods:</strong> condoms, diaphragms, cervical caps (71-98% effective)</li>
+                        <li><strong>Intrauterine devices (IUDs):</strong> hormonal and copper (>99% effective)</li>
+                        <li><strong>Emergency contraception:</strong> morning-after pills, copper IUD insertion</li>
+                        <li><strong>Permanent methods:</strong> tubal ligation, vasectomy (>99% effective)</li>
+                        <li><strong>Natural methods:</strong> fertility awareness-based methods, withdrawal (76-96% effective)</li>
+                    </ul>
+                    <p>Consulting with a healthcare provider can help determine which option is best for you based on your health history, lifestyle, and preferences.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How do I know if I have a yeast infection?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Common symptoms of a vaginal yeast infection include:</p>
+                    <ul>
+                        <li>Itching and irritation in the vagina and vulva</li>
+                        <li>Burning sensation, especially during urination or intercourse</li>
+                        <li>Redness and swelling of the vulva</li>
+                        <li>Vaginal pain or soreness</li>
+                        <li>Thick, white, odorless discharge with a cottage cheese-like appearance</li>
+                    </ul>
+                    <p>If you're experiencing these symptoms for the first time, it's best to see a healthcare provider for a proper diagnosis. Other infections can have similar symptoms but require different treatments.</p>
+                </div>
+            </div>
+            
+            <h2 class="category-heading"><i class="fas fa-question-circle"></i> Using the Tracker</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How accurate are period predictions?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Period predictions become more accurate the more data you input. After tracking for 3-4 cycles, the app can provide reasonably accurate predictions for most regular cycles.</p>
+                    <p>However, keep in mind that many factors can affect your cycle, including:</p>
+                    <ul>
+                        <li>Stress</li>
+                        <li>Travel</li>
+                        <li>Illness</li>
+                        <li>Changes in weight or exercise habits</li>
+                        <li>Medical conditions like PCOS</li>
+                    </ul>
+                    <p>Even with regular tracking, predictions may sometimes be off by a few days.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How can I back up my tracking data?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Currently, your data is stored locally in your browser's storage. To avoid losing your data:</p>
+                    <ul>
+                        <li>Don't clear your browser data/cache for this website</li>
+                        <li>Use the same device and browser to access the tracker</li>
+                    </ul>
+                    <p>In the future, we plan to add account-based storage that will allow you to access your data across different devices.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Female Health Tracker</p>
+    </footer>
+
+    <script>
+        // FAQ toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+                    const icon = this.querySelector('i');
+                    
+                    // Toggle active class on answer
+                    answer.classList.toggle('active');
+                    
+                    // Toggle icon rotation
+                    icon.classList.toggle('rotate-icon');
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
